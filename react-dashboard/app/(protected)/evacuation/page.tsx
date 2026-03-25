@@ -6,12 +6,7 @@ import { ArrowLeft, Loader2, Navigation, MapPin, Users, Target } from 'lucide-re
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 
-export default function EvacuationPage() {
-  const { data, coords, loading, t } = useDisasterData();
-  const router = useRouter();
-  const [selectedCoords, setSelectedCoords] = useState<[number, number] | null>(null);
-
-// Dynamically import the Leaflet map with SSR disabled.
+// Dynamically import the Leaflet map with SSR disabled. moved outside for correctness
 const EvacuationMap = dynamic(() => import('@/components/ui/evacuation-map'), { 
   ssr: false,
   loading: () => (
@@ -21,6 +16,11 @@ const EvacuationMap = dynamic(() => import('@/components/ui/evacuation-map'), {
     </div>
   )
 });
+
+export default function EvacuationPage() {
+  const { data, coords, loading, t } = useDisasterData();
+  const router = useRouter();
+  const [selectedCoords, setSelectedCoords] = useState<[number, number] | null>(null);
 
   if (loading || !data) {
     return (
