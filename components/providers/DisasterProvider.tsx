@@ -73,7 +73,7 @@ export const DisasterProvider = ({ children }: { children: React.ReactNode }) =>
       setCity(locationInfo.city);
 
       // 2. Fetch all data
-      const disasterData = await fetchAllDisasterData(locationInfo.coords);
+      const disasterData = await fetchAllDisasterData(locationInfo.coords, locationInfo.city);
       setData(disasterData);
     } catch (error) {
       console.error("Failed to initialize disaster data", error);
@@ -92,7 +92,7 @@ export const DisasterProvider = ({ children }: { children: React.ReactNode }) =>
     const coords = { lat, lon };
     setCoords(coords);
     setCity(cityName);
-    const disasterData = await fetchAllDisasterData(coords);
+    const disasterData = await fetchAllDisasterData(coords, cityName);
     setData(disasterData);
     setLocationError(null);
     setShowLocationModal(false);
