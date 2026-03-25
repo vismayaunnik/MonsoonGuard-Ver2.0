@@ -18,7 +18,7 @@ export const AppHeader = () => {
   };
 
   return (
-    <header className="flex justify-between items-center p-5 bg-purple-900 sticky top-0 z-50 border-b border-white/20">
+    <header className="flex justify-between items-center p-5 bg-[#0a1228cc] backdrop-blur-md sticky top-0 z-50 border-b border-blue-900/30">
       <div className="flex items-center gap-3">
         <div className="flex items-center justify-center shrink-0">
           <Image src="/logo.png" alt="MonsoonGuard Logo" width={40} height={40} className="object-contain" />

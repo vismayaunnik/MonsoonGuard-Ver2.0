@@ -17,6 +17,7 @@ interface DisasterContextType {
   retryLocation: (useDefault?: boolean) => Promise<void>;
   showLocationModal: boolean;
   setShowLocationModal: (show: boolean) => void;
+  setManualLocation: (lat: number, lon: number, city: string) => Promise<void>;
 }
 
 const DisasterContext = createContext<DisasterContextType>({
@@ -32,6 +33,7 @@ const DisasterContext = createContext<DisasterContextType>({
   retryLocation: async () => {},
   showLocationModal: false,
   setShowLocationModal: () => {},
+  setManualLocation: async () => {},
 });
 
 export const useDisasterData = () => useContext(DisasterContext);
@@ -91,7 +93,20 @@ export const DisasterProvider = ({ children }: { children: React.ReactNode }) =>
   };
 
   const retryLocation = async (useDefault = false) => {
+    setLocationError(null);
     await initData(useDefault);
+  };
+
+  const setManualLocation = async (lat: number, lon: number, cityName: string) => {
+    setLoading(true);
+    const coords = { lat, lon };
+    setCoords(coords);
+    setCity(cityName);
+    const disasterData = await fetchAllDisasterData(coords);
+    setData(disasterData);
+    setLocationError(null);
+    setShowLocationModal(false);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -101,7 +116,7 @@ export const DisasterProvider = ({ children }: { children: React.ReactNode }) =>
   return (
     <DisasterContext.Provider value={{ 
       coords, city, data, loading, refreshData: initData, language, setLanguage, t,
-      locationError, retryLocation, showLocationModal, setShowLocationModal
+      locationError, retryLocation, showLocationModal, setShowLocationModal, setManualLocation
     }}>
       {children}
     </DisasterContext.Provider>

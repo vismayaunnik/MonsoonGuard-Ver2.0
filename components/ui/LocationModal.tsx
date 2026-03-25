@@ -2,11 +2,35 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin, Navigation, AlertTriangle, RefreshCw, CheckCircle } from 'lucide-react';
+import { MapPin, RefreshCw, Search } from 'lucide-react';
 import { useDisasterData } from '@/components/providers/DisasterProvider';
+import { useState } from 'react';
 
 export const LocationModal = () => {
-  const { locationError, retryLocation, loading, city, showLocationModal, setShowLocationModal } = useDisasterData();
+  const { locationError, retryLocation, loading, city, showLocationModal, setShowLocationModal, setManualLocation } = useDisasterData();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
+
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) return;
+    setIsSearching(true);
+    try {
+      const resp = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(searchQuery)}&format=json&limit=1`);
+      const results = await resp.json();
+      if (results && results.length > 0) {
+        const res = results[0];
+        const cityName = res.display_name.split(',')[0] + ', ' + (res.address?.state || 'India');
+        await setManualLocation(parseFloat(res.lat), parseFloat(res.lon), cityName);
+      } else {
+        alert("City not found. Please try a different name.");
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsSearching(false);
+    }
+  };
 
   if (!showLocationModal) return null;
 
@@ -48,26 +72,49 @@ export const LocationModal = () => {
                 : "We're having trouble pinpointing your exact location. Please ensure your device's location services are turned on."}
             </p>
 
-            <div className="flex flex-col gap-3">
-              <button
-                onClick={() => retryLocation()}
+            <div className="space-y-4">
+              <button 
+                onClick={() => retryLocation(false)}
                 disabled={loading}
-                className="w-full py-4 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white rounded-2xl font-semibold transition-all flex items-center justify-center gap-2 group shadow-lg shadow-blue-900/20"
+                className="w-full flex items-center justify-center gap-3 bg-blue-600 hover:bg-blue-500 disabled:bg-zinc-800 disabled:text-zinc-500 text-white py-4 px-6 rounded-2xl font-bold transition-all transform active:scale-[0.98] shadow-lg shadow-blue-500/25"
               >
-                {loading ? (
-                  <RefreshCw className="w-5 h-5 animate-spin" />
-                ) : (
-                  <Navigation className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                )}
-                <span>Retry Detection</span>
+                <RefreshCw className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} />
+                {loading ? 'Detecting...' : 'Retry Detection'}
               </button>
 
-              <button
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-zinc-800"></div>
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-zinc-900 px-3 text-zinc-500 font-medium tracking-widest">Or enter city</span>
+                </div>
+              </div>
+
+              <form onSubmit={handleSearch} className="relative group">
+                <input
+                  type="text"
+                  placeholder="e.g. Mumbai, Kochi, Chennai..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full bg-zinc-800/50 border border-zinc-700/50 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/10 rounded-2xl py-4 pl-12 pr-6 text-zinc-200 placeholder:text-zinc-600 transition-all outline-none"
+                />
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-600 group-focus-within:text-blue-400 transition-colors" />
+                <button 
+                  type="submit"
+                  disabled={isSearching || !searchQuery.trim()}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 bg-zinc-700 hover:bg-blue-600 disabled:bg-transparent text-white p-2 rounded-xl transition-all"
+                >
+                  {isSearching ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
+                </button>
+              </form>
+
+              <button 
                 onClick={() => retryLocation(true)}
                 disabled={loading}
-                className="w-full py-4 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-2xl font-medium transition-colors"
+                className="w-full flex items-center justify-center gap-3 bg-zinc-800/50 hover:bg-zinc-800 border border-zinc-700 text-zinc-400 py-3 px-6 rounded-2xl font-medium transition-all"
               >
-                Use Default (Taliparamba, Kerala)
+                Use Default (Mumbai, MH)
               </button>
             </div>
 
