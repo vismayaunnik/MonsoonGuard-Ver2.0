@@ -1,0 +1,3 @@
+*.ts linguist-language=Java
+app/**/*.tsx linguist-language=HTML
+components/**/*.tsx linguist-language=CSS
