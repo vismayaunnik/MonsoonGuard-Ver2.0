@@ -53,15 +53,15 @@ export interface DisasterData {
 
 export const detectLocation = async (): Promise<{ coords: Coordinates; city: string }> => {
   if (typeof navigator === 'undefined' || !navigator.geolocation) {
-    return { coords: { lat: 19.0760, lon: 72.8777 }, city: 'Mumbai, MH (Default)' };
+    return { coords: { lat: 12.0401, lon: 75.3582 }, city: 'Taliparamba, Kerala (Default)' };
   }
 
   try {
     const pos = await new Promise<GeolocationPosition>((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(resolve, reject, {
-        timeout: 8000,
-        enableHighAccuracy: false,
-        maximumAge: 60000,
+        timeout: 10000,
+        enableHighAccuracy: true,
+        maximumAge: 30000,
       });
     });
 
@@ -80,7 +80,7 @@ export const detectLocation = async (): Promise<{ coords: Coordinates; city: str
       return { coords, city: `${coords.lat.toFixed(2)}, ${coords.lon.toFixed(2)}` };
     }
   } catch {
-    return { coords: { lat: 19.0760, lon: 72.8777 }, city: 'Mumbai, MH (Default)' };
+    return { coords: { lat: 12.0401, lon: 75.3582 }, city: 'Taliparamba, Kerala (Default)' };
   }
 };
 
