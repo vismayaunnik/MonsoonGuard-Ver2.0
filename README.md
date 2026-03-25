@@ -1,75 +1,82 @@
 # MonsoonGuard ⛈️🛡️
 
-> **Next-Generation Flood Management & Emergency Response System**
+MonsoonGuard is a comprehensive Flood Management & Emergency Response System designed to help communities prepare for and respond to flooding events. The platform provides real-time weather alerts, flood risk monitoring, evacuation center discovery, and offline map support to ensure accessibility even during network disruptions.
 
-MonsoonGuard is a comprehensive, full-stack disaster management dashboard built to provide real-time telemetry, location-aware weather alerts, and emergency coordination. Designed to minimize latency and maximize clarity during critical climatic events, it ensures communities and emergency responders have instant access to potentially life-saving data.
+## Features
 
-## 🌟 Key Features
+**Flood Monitoring**
+- Real-time monitoring of river conditions and water levels
+- Flood risk assessment based on environmental data
 
-- **Live Meteorological Tracking**: Instantly view weather alerts, 6-day forecasts, and river station telemetry.
-- **Evacuation Center Routing**: Integrated distance detection and real-time capacity tracking for emergency shelters.
-- **Global Reactive Localization**: Full support for absolute, zero-refresh translation across English, Hindi, Bengali, Malayalam, and Telugu.
-- **Premium User-Interface**: Built with Tailwind CSS, featuring subtle hover-reveals, responsive grid architecture, and dynamic layout scaling.
-- **Offline Maps Protocol**: Simulated pre-caching for emergency cartography downloads when regional grid networks fail.
+**Weather Alerts**
+- Live weather data and multi-day forecasts
+- Automatic risk alerts for extreme rainfall and storm conditions
 
-## 🛠️ Technology Stack
+**Evacuation Centers**
+- Locate nearby evacuation shelters and relief centers
+- Quick routing and map guidance during emergencies
 
-- **Framework:** Next.js 15 (App Router)
-- **Library:** React 19
-- **Styling:** Tailwind CSS (with arbitrary value integration)
-- **Icons:** Lucide-React
-- **Type Safety:** TypeScript
-- **Deployment & Hosting:** Vercel (target configuration)
+**Offline Maps**
+- Emergency map tile caching
+- Maps remain accessible even without an internet connection
 
-## 📦 Local Setup Instructions
+**Premium 3D Interfaces & Micro-Animations**
+- Interactive 3D interactive login portal using Three.js and React-Three-Fiber
+- Dynamic tracking background gradients and hover-reveals
 
-1. **Clone the repository:**
-   ```bash
-   git clone <your-github-repo-url>
-   cd monsoonguard-react
-   ```
-2. **Install core dependencies:**
-   ```bash
-   npm install
-   ```
-3. **Configure Environment Variables:**
-   Rename `.env.example` to `.env.local` and substitute the mocked secrets if integrating live APIs.
-   ```bash
-   cp .env.example .env.local
-   ```
-4. **Boot the development server:**
-   ```bash
-   npm run dev
-   ```
-5. **Launch the application:**
-   Open [http://localhost:3000](http://localhost:3000) in your browser.
+**Multilingual Support (Zero-Refresh Context Routing)**
+Available in:
+- English
+- Hindi
+- Bengali
+- Malayalam
+- Telugu
 
-## 🔑 Environment Configuration
+## Tech Stack
+- **Languages:** HTML5, CSS3, JavaScript (ES6+), TypeScript
+- **Frameworks:** Next.js 15 (App Router), React 19
+- **Styling Libraries:** Tailwind CSS, Shadcn UI, Framer Motion
+- **Map Architecture:** React-Leaflet (`react-leaflet`)
+- **3D Visualization:** `@react-three/fiber`, `@react-three/drei`
 
-Currently, critical systems respond to a local simulated data context to guarantee zero-latency execution. However, scaling it up requires connecting keys in the `.env` root:
-- `NEXT_PUBLIC_WEATHER_API_KEY`: Keys for integrating upstream meteorological telemetry.
-- `NEXT_PUBLIC_MAPBOX_TOKEN`: For downstream map tile generation.
+## How to Run Locally
 
-## 📂 Architecture & Directory Structure
-
-```text
-/monsoonguard-react
-├── app/                  # Next.js App Router root
-│   ├── (auth)/          # Authentication flow boundaries
-│   ├── (protected)/     # Encapsulated Dashboard sub-routes
-│   └── globals.css      # Core Tailwind and variable registers
-├── components/          # Reusable frontend architecture
-│   ├── providers/       # Global React Contexts (DisasterProvider)
-│   └── ui/              # Modular interface widgets
-├── lib/                 # Core utilities
-│   └── translations.ts  # System language dictionary
-├── public/              # Static assets, logos, and manifest configs
-└── next.config.ts       # Protocol restrictions and UI overrides
+1. **Clone the repository:** 
+If you are downloading this project for the first time, clone it and navigate into the folder:
+```bash
+git clone https://github.com/vismayaunnik/MonsoonGuard-Ver2.0.git
+cd MonsoonGuard-Ver2.0
 ```
 
-## 🚀 Future Roadmap & Optimizations
+2. **Install Dependencies:** 
+Ensure you have Node.js installed, then run the following command to initialize the project:
+```bash
+npm install
+```
 
-- [ ] **PWA Integration:** Establish true service workers caching arrays for total sub-grid networking survival.
-- [ ] **Live OpenWeatherMap Hooks:** Fully swap the mocked response nodes for active remote endpoints.
-- [ ] **Real-time WebSockets:** Implement bidirectional push infrastructure for sub-second emergency broadcast overlays.
-- [ ] **Data Persistence:** Bind user profile preferences and location nodes to a remote store (e.g., PostgreSQL/Supabase).
+3. **Start the Server:** 
+This starts the local Next.js development server:
+```bash
+npm run dev
+```
+
+4. **Open the App in your Browser:** 
+Navigate your web browser to: http://localhost:3000
+
+## APIs & Endpoints Used
+
+- **Open-Meteo API**: Fetches current regional telemetry, precise temperatures, and multi-day meteorological forecasting dynamically.
+- **Overpass API (OSM)**: Powerful map tile querying engine utilized to detect main rivers, real-time emergency shelters, and relief routing dynamically based on user coordinate bounding boxes.
+- **OpenStreetMap & Nominatim**: Core mapping protocol used for rendering interactive UI map tiles and performing exact reverse-geocoding of the user's detected position into readable City/District layers.
+
+## Future Improvements
+- AI-based flood prediction models utilizing historical telemetry
+- Government disaster data & alert siren integration
+- SMS fallback emergency alerts for rural areas without active data
+- Crowdsourced local flood reporting and image verification
+
+## Project Purpose
+This project was created to demonstrate how modern web technologies can assist in disaster preparedness and climate resilience, particularly for flood-prone regions. It serves to bridge the gap between complex metric algorithms and highly accessible human interfaces.
+
+## License
+MIT License
