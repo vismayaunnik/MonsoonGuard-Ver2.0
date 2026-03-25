@@ -1,4 +1,4 @@
-# MonsoonGuard ⛈️🛡️
+# MonsoonGuard 
 
 MonsoonGuard is a comprehensive Flood Management & Emergency Response System designed to help communities prepare for and respond to flooding events. The platform provides real-time weather alerts, flood risk monitoring, evacuation center discovery, and offline map support to ensure accessibility even during network disruptions.
 
