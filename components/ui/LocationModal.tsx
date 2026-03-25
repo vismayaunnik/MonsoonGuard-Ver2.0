@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin, RefreshCw, Search } from 'lucide-react';
+import { MapPin, RefreshCw, Search, X, AlertTriangle } from 'lucide-react';
 import { useDisasterData } from '@/components/providers/DisasterProvider';
 import { useState } from 'react';
 
@@ -52,9 +52,9 @@ export const LocationModal = () => {
           {/* Close Button */}
           <button 
             onClick={() => setShowLocationModal(false)}
-            className="absolute top-6 right-6 text-zinc-500 hover:text-white transition-colors"
+            className="absolute top-6 right-6 text-zinc-500 hover:text-white transition-colors p-2 hover:bg-zinc-800 rounded-full"
           >
-            <RefreshCw className="w-5 h-5 rotate-45" />
+            <X className="w-5 h-5" />
           </button>
 
           <div className="relative z-10 text-center">
