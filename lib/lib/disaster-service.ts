@@ -53,7 +53,7 @@ export interface DisasterData {
 
 export const detectLocation = async (): Promise<{ coords: Coordinates; city: string; errorType?: 'PERMISSION_DENIED' | 'TECHNICAL_ERROR' }> => {
   if (typeof navigator === 'undefined' || !navigator.geolocation) {
-    return { coords: { lat: 12.0401, lon: 75.3582 }, city: 'Taliparamba, Kerala (Default)', errorType: 'TECHNICAL_ERROR' };
+    return { coords: { lat: 19.0760, lon: 72.8777 }, city: 'Mumbai, MH (Default)', errorType: 'TECHNICAL_ERROR' };
   }
 
   try {
@@ -82,8 +82,8 @@ export const detectLocation = async (): Promise<{ coords: Coordinates; city: str
   } catch (error: any) {
     const isPermissionDenied = error.code === 1; // GeolocationPositionError.PERMISSION_DENIED
     return { 
-      coords: { lat: 12.0401, lon: 75.3582 }, 
-      city: 'Taliparamba, Kerala (Default)',
+      coords: { lat: 19.0760, lon: 72.8777 }, 
+      city: 'Mumbai, MH (Default)',
       errorType: isPermissionDenied ? 'PERMISSION_DENIED' : 'TECHNICAL_ERROR'
     };
   }
@@ -192,8 +192,8 @@ export const getFallbackFloodData = (): FloodData => ({
 });
 
 export const getFallbackEvacuationData = (): EvacuationCenter[] => [
-  { name: 'Tagore Vidyaniketan GHSS', type: 'School', status: 'Open', capacity: 143, distance: '6.0 km', directionsUrl: 'https://www.google.com/maps/search/?api=1&query=Tagore+Vidyaniketan+GHSS', lat: 12.0401, lon: 75.3582 },
-  { name: 'Seethi Sahib Higher Secondary School', type: 'School', status: 'Open', capacity: 512, distance: '5.0 km', directionsUrl: 'https://www.google.com/maps/search/?api=1&query=Seethi+Sahib+Higher+Secondary+School', lat: 12.0423, lon: 75.3615 },
+  { name: 'Bombay Hospital & Medical Research Centre', type: 'Hospital', status: 'Open', capacity: 800, distance: '1.2 km', directionsUrl: 'https://www.google.com/maps/search/?api=1&query=Bombay+Hospital', lat: 18.9400, lon: 72.8282 },
+  { name: 'St. Xavier\'s College Emergency Shelter', type: 'School', status: 'Open', capacity: 1200, distance: '1.5 km', directionsUrl: 'https://www.google.com/maps/search/?api=1&query=St.+Xaviers+College+Mumbai', lat: 18.9439, lon: 72.8313 },
 ];
 
 export const fetchAllDisasterData = async (coords: Coordinates): Promise<DisasterData> => {

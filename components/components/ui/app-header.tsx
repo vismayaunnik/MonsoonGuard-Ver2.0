@@ -10,7 +10,7 @@ import { Language } from '@/lib/translations';
 
 export const AppHeader = () => {
   const router = useRouter();
-  const { language, setLanguage, t } = useDisasterData();
+  const { language, setLanguage, t, setShowLocationModal } = useDisasterData();
   
   const handleLogout = () => {
     localStorage.removeItem('currentUser');
@@ -46,6 +46,14 @@ export const AppHeader = () => {
           className="flex items-center gap-2 bg-red-500/10 text-red-500 border border-red-500/20 px-4 py-2 rounded-md hover:bg-red-500 hover:text-white transition-colors text-sm font-medium"
         >
           <LogOut size={16} /> <span>{t('logout')}</span>
+        </button>
+
+        <button 
+          onClick={() => setShowLocationModal(true)}
+          className="p-2 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-md hover:bg-blue-500/20 transition-colors"
+          title="Location Settings"
+        >
+          <MapPin size={20} />
         </button>
       </div>
     </header>

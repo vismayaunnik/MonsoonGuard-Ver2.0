@@ -15,6 +15,8 @@ interface DisasterContextType {
   t: (key: string) => string;
   locationError: 'PERMISSION_DENIED' | 'TECHNICAL_ERROR' | null;
   retryLocation: (useDefault?: boolean) => Promise<void>;
+  showLocationModal: boolean;
+  setShowLocationModal: (show: boolean) => void;
 }
 
 const DisasterContext = createContext<DisasterContextType>({
@@ -28,6 +30,8 @@ const DisasterContext = createContext<DisasterContextType>({
   t: (key) => key,
   locationError: null,
   retryLocation: async () => {},
+  showLocationModal: false,
+  setShowLocationModal: () => {},
 });
 
 export const useDisasterData = () => useContext(DisasterContext);
@@ -39,6 +43,7 @@ export const DisasterProvider = ({ children }: { children: React.ReactNode }) =>
   const [loading, setLoading] = useState(true);
   const [language, setLanguageState] = useState<Language>('en');
   const [locationError, setLocationError] = useState<'PERMISSION_DENIED' | 'TECHNICAL_ERROR' | null>(null);
+  const [showLocationModal, setShowLocationModal] = useState(false);
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
@@ -69,8 +74,7 @@ export const DisasterProvider = ({ children }: { children: React.ReactNode }) =>
       
       if (locationInfo.errorType && !forceDefault) {
         setLocationError(locationInfo.errorType);
-        // We still set coords to fallback to avoid total breakage, 
-        // but the error state will trigger the modal
+        setShowLocationModal(true);
       }
 
       setCoords(locationInfo.coords);
@@ -97,7 +101,7 @@ export const DisasterProvider = ({ children }: { children: React.ReactNode }) =>
   return (
     <DisasterContext.Provider value={{ 
       coords, city, data, loading, refreshData: initData, language, setLanguage, t,
-      locationError, retryLocation
+      locationError, retryLocation, showLocationModal, setShowLocationModal
     }}>
       {children}
     </DisasterContext.Provider>

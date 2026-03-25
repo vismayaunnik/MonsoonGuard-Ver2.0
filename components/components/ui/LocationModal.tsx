@@ -6,9 +6,9 @@ import { MapPin, Navigation, AlertTriangle, RefreshCw, CheckCircle } from 'lucid
 import { useDisasterData } from '@/components/providers/DisasterProvider';
 
 export const LocationModal = () => {
-  const { locationError, retryLocation, loading, city } = useDisasterData();
+  const { locationError, retryLocation, loading, city, showLocationModal, setShowLocationModal } = useDisasterData();
 
-  if (!locationError) return null;
+  if (!showLocationModal) return null;
 
   return (
     <AnimatePresence>
@@ -23,8 +23,15 @@ export const LocationModal = () => {
           animate={{ scale: 1, opacity: 1, y: 0 }}
           className="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 max-w-md w-full shadow-2xl relative overflow-hidden"
         >
-          {/* Decorative Glow */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-32 bg-blue-500/20 blur-[60px] pointer-events-none" />
+
+          {/* Close Button */}
+          <button 
+            onClick={() => setShowLocationModal(false)}
+            className="absolute top-6 right-6 text-zinc-500 hover:text-white transition-colors"
+          >
+            <RefreshCw className="w-5 h-5 rotate-45" />
+          </button>
 
           <div className="relative z-10 text-center">
             <div className="w-20 h-20 bg-blue-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-blue-500/20">
