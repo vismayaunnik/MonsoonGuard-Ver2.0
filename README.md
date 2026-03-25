@@ -1,6 +1,6 @@
-# MonsoonGuard 
+# MonsoonGuard ⛈️🛡️
 
-MonsoonGuard is a comprehensive **Flood Management & Emergency Response System** designed to help communities prepare for and respond to flooding events. The platform provides real-time weather alerts, flood risk monitoring, evacuation center discovery, and offline map support to ensure accessibility even during network disruptions.
+MonsoonGuard is a comprehensive Flood Management & Emergency Response System designed to help communities prepare for and respond to flooding events. The platform provides real-time weather alerts, flood risk monitoring, evacuation center discovery, and offline map support to ensure accessibility even during network disruptions.
 
 ## Features
 
@@ -21,10 +21,10 @@ MonsoonGuard is a comprehensive **Flood Management & Emergency Response System**
 - Maps remain accessible even without an internet connection
 
 **Premium 3D Interfaces & Micro-Animations**
-- Interactive 3D interactive login portal using Three.js and React-Three-Fiber
+- Interactive 3D login portal using Three.js and React-Three-Fiber
 - Dynamic tracking background gradients and hover-reveals
 
-**Multilingual Support**
+**Multilingual Support (Zero-Refresh Context Routing)**
 Available in:
 - English
 - Hindi
@@ -33,7 +33,7 @@ Available in:
 - Telugu
 
 ## Tech Stack
-- **Languages:** HTML5, CSS3, JavaScript (ES6+), TypeScript
+- **Languages:** Java, HTML5, CSS3, JavaScript (ES6+), TypeScript
 - **Frameworks:** Next.js 15 (App Router), React 19
 - **Styling Libraries:** Tailwind CSS, Shadcn UI, Framer Motion
 - **Map Architecture:** React-Leaflet (`react-leaflet`)
