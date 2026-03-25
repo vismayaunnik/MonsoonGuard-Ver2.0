@@ -6,16 +6,19 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { EvacuationCenter, Coordinates } from '@/lib/disaster-service';
 
-// Custom icons to avoid Leaflet marker bug in Next.js
-const customIcon = new L.Icon({
-  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
+// Custom icon creation moved inside to avoid SSR crashes
+const createCustomIcon = () => {
+  if (typeof window === 'undefined') return null;
+  return new L.Icon({
+    iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+    iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
+};
 
 const MapUpdater = ({ coords, selectedCoords }: { coords: Coordinates | null, selectedCoords: [number, number] | null }) => {
   const map = useMap();
@@ -41,8 +44,24 @@ interface EvacuationMapProps {
 }
 
 export default function EvacuationMap({ centers, userCoords, selectedCoords }: EvacuationMapProps) {
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const defaultCenter = [19.0760, 72.8777] as [number, number];
   const center = userCoords ? [userCoords.lat, userCoords.lon] as [number, number] : defaultCenter;
+  
+  // Create icon on client-side only
+  const customIcon = React.useMemo(() => createCustomIcon(), []);
+
+  if (!mounted || typeof window === 'undefined') {
+    return (
+      <div className="w-full h-full bg-[#0a1228] flex items-center justify-center text-blue-400">
+        <p>Loading secure map...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full h-full rounded-2xl overflow-hidden shadow-2xl relative z-0">
@@ -66,7 +85,7 @@ export default function EvacuationMap({ centers, userCoords, selectedCoords }: E
         <MapUpdater coords={userCoords} selectedCoords={selectedCoords || null} />
 
         {centers.map((c, i) => (
-          c.lat && c.lon && (
+          c.lat && c.lon && customIcon && (
             <Marker key={i} position={[c.lat, c.lon]} icon={customIcon}>
               <Popup>
                 <strong>{c.name}</strong><br/>
