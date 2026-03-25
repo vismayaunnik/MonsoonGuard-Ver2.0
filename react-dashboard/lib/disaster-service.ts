@@ -51,9 +51,9 @@ export interface DisasterData {
   timestamp: string;
 }
 
-export const detectLocation = async (): Promise<{ coords: Coordinates; city: string }> => {
+export const detectLocation = async (): Promise<{ coords: Coordinates; city: string; errorType?: 'PERMISSION_DENIED' | 'TECHNICAL_ERROR' }> => {
   if (typeof navigator === 'undefined' || !navigator.geolocation) {
-    return { coords: { lat: 12.0401, lon: 75.3582 }, city: 'Taliparamba, Kerala (Default)' };
+    return { coords: { lat: 12.0401, lon: 75.3582 }, city: 'Taliparamba, Kerala (Default)', errorType: 'TECHNICAL_ERROR' };
   }
 
   try {
@@ -79,8 +79,13 @@ export const detectLocation = async (): Promise<{ coords: Coordinates; city: str
     } catch {
       return { coords, city: `${coords.lat.toFixed(2)}, ${coords.lon.toFixed(2)}` };
     }
-  } catch {
-    return { coords: { lat: 12.0401, lon: 75.3582 }, city: 'Taliparamba, Kerala (Default)' };
+  } catch (error: any) {
+    const isPermissionDenied = error.code === 1; // GeolocationPositionError.PERMISSION_DENIED
+    return { 
+      coords: { lat: 12.0401, lon: 75.3582 }, 
+      city: 'Taliparamba, Kerala (Default)',
+      errorType: isPermissionDenied ? 'PERMISSION_DENIED' : 'TECHNICAL_ERROR'
+    };
   }
 };
 

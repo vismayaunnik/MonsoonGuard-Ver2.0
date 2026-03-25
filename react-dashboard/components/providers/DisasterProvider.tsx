@@ -13,6 +13,8 @@ interface DisasterContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
   t: (key: string) => string;
+  locationError: 'PERMISSION_DENIED' | 'TECHNICAL_ERROR' | null;
+  retryLocation: (useDefault?: boolean) => Promise<void>;
 }
 
 const DisasterContext = createContext<DisasterContextType>({
@@ -24,6 +26,8 @@ const DisasterContext = createContext<DisasterContextType>({
   language: 'en',
   setLanguage: () => {},
   t: (key) => key,
+  locationError: null,
+  retryLocation: async () => {},
 });
 
 export const useDisasterData = () => useContext(DisasterContext);
@@ -34,6 +38,7 @@ export const DisasterProvider = ({ children }: { children: React.ReactNode }) =>
   const [data, setData] = useState<DisasterData | null>(null);
   const [loading, setLoading] = useState(true);
   const [language, setLanguageState] = useState<Language>('en');
+  const [locationError, setLocationError] = useState<'PERMISSION_DENIED' | 'TECHNICAL_ERROR' | null>(null);
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
@@ -55,11 +60,19 @@ export const DisasterProvider = ({ children }: { children: React.ReactNode }) =>
     }
   }, []);
 
-  const initData = async () => {
+  const initData = async (forceDefault = false) => {
     setLoading(true);
+    setLocationError(null);
     try {
       // 1. Get coords
       const locationInfo = await detectLocation();
+      
+      if (locationInfo.errorType && !forceDefault) {
+        setLocationError(locationInfo.errorType);
+        // We still set coords to fallback to avoid total breakage, 
+        // but the error state will trigger the modal
+      }
+
       setCoords(locationInfo.coords);
       setCity(locationInfo.city);
 
@@ -73,12 +86,19 @@ export const DisasterProvider = ({ children }: { children: React.ReactNode }) =>
     }
   };
 
+  const retryLocation = async (useDefault = false) => {
+    await initData(useDefault);
+  };
+
   useEffect(() => {
     initData();
   }, []);
 
   return (
-    <DisasterContext.Provider value={{ coords, city, data, loading, refreshData: initData, language, setLanguage, t }}>
+    <DisasterContext.Provider value={{ 
+      coords, city, data, loading, refreshData: initData, language, setLanguage, t,
+      locationError, retryLocation
+    }}>
       {children}
     </DisasterContext.Provider>
   );
