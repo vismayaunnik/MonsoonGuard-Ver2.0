@@ -53,9 +53,13 @@ export default function EvacuationPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-8">
         
-        {/* Map Card */}
-        <div className="min-h-[550px] relative rounded-2xl z-0 border border-blue-900/40 shadow-2xl">
-          <EvacuationMap centers={centers} userCoords={coords} selectedCoords={selectedCoords} />
+        {/* Map Card - temporarily disabled for isolation */}
+        <div className="min-h-[550px] relative rounded-2xl z-0 border border-blue-900/40 shadow-2xl flex items-center justify-center bg-[#0a1228] text-blue-400 p-8 text-center">
+          <div>
+            <Loader2 className="animate-spin mb-4 mx-auto" size={32} />
+            <p className="text-xl font-semibold mb-2">Emergency Map Maintenance</p>
+            <p className="text-sm opacity-70">We are currently optimizing the map experience for your region. Emergency markers are still available in the list on the right.</p>
+          </div>
         </div>
 
         {/* Centers List */}
