@@ -1,4 +1,5 @@
 import { AppHeader, UserPanel, CursorBackground } from "@/components/ui/app-header";
+import { LocationModal } from "@/components/ui/LocationModal";
 
 export default function ProtectedLayout({
   children,
@@ -10,6 +11,7 @@ export default function ProtectedLayout({
       <CursorBackground />
       <AppHeader />
       <UserPanel />
+      <LocationModal />
       <main className="flex-1 overflow-y-auto relative z-10">
         {children}
       </main>
