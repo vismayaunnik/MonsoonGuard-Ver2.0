@@ -1,6 +1,6 @@
 # MonsoonGuard 
 
-MonsoonGuard is a comprehensive *Flood Management & Emergency Response System* designed to help communities prepare for and respond to flooding events. The platform provides real-time weather alerts, flood risk monitoring, evacuation center discovery, and offline map support to ensure accessibility even during network disruptions.
+MonsoonGuard is a comprehensive **Flood Management & Emergency Response System** designed to help communities prepare for and respond to flooding events. The platform provides real-time weather alerts, flood risk monitoring, evacuation center discovery, and offline map support to ensure accessibility even during network disruptions.
 
 ## Features
 
@@ -24,7 +24,7 @@ MonsoonGuard is a comprehensive *Flood Management & Emergency Response System* d
 - Interactive 3D interactive login portal using Three.js and React-Three-Fiber
 - Dynamic tracking background gradients and hover-reveals
 
-**Multilingual Support (Zero-Refresh Context Routing)**
+**Multilingual Support**
 Available in:
 - English
 - Hindi
