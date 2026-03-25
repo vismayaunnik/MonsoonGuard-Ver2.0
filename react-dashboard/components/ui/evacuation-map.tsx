@@ -20,10 +20,15 @@ const customIcon = new L.Icon({
 const MapUpdater = ({ coords, selectedCoords }: { coords: Coordinates | null, selectedCoords: [number, number] | null }) => {
   const map = useMap();
   useEffect(() => {
-    if (selectedCoords) {
-      map.flyTo(selectedCoords, 16, { duration: 1.5 });
-    } else if (coords) {
-      map.setView([coords.lat, coords.lon], 13);
+    if (!map) return;
+    try {
+      if (selectedCoords && typeof selectedCoords[0] === 'number' && typeof selectedCoords[1] === 'number') {
+        map.flyTo(selectedCoords, 16, { duration: 1.5 });
+      } else if (coords && typeof coords.lat === 'number' && typeof coords.lon === 'number') {
+        map.setView([coords.lat, coords.lon], 13);
+      }
+    } catch (err) {
+      console.error("Leaflet map update error:", err);
     }
   }, [coords, selectedCoords, map]);
   return null;

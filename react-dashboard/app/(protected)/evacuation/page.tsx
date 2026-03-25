@@ -11,18 +11,16 @@ export default function EvacuationPage() {
   const router = useRouter();
   const [selectedCoords, setSelectedCoords] = useState<[number, number] | null>(null);
 
-  // Dynamically import the Leaflet map with SSR disabled.
-  const EvacuationMap = useMemo(
-    () => dynamic(() => import('@/components/ui/evacuation-map'), { 
-      ssr: false,
-      loading: () => (
-        <div className="w-full h-full min-h-[550px] bg-[#0a1228] border border-blue-900/40 rounded-2xl flex flex-col items-center justify-center text-blue-400">
-          <Loader2 className="animate-spin mb-4" size={32} />
-          <p>{t('loading-centers')}</p>
-        </div>
-      )
-    }), 
-  []);
+// Dynamically import the Leaflet map with SSR disabled.
+const EvacuationMap = dynamic(() => import('@/components/ui/evacuation-map'), { 
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full min-h-[550px] bg-[#0a1228] border border-blue-900/40 rounded-2xl flex flex-col items-center justify-center text-blue-400">
+      <Loader2 className="animate-spin mb-4" size={32} />
+      <p>Preparing emergency map...</p>
+    </div>
+  )
+});
 
   if (loading || !data) {
     return (
