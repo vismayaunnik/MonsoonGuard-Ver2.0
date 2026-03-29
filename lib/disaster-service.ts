@@ -209,13 +209,9 @@ export const fetchEvacuationCenters = async (coords: Coordinates, cityName: stri
   const radius = 10000; // 10km
 
   try {
-    // Note: In a real app, this should probably be proxied through a backend to hide API key
-    // For this implementation, we'll use a direct fetch or a proxy if available
-    const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lon}&radius=${radius}&type=${types.join('|')}&key=${GOOGLE_MAPS_API_KEY}&language=${lang}`;
-    
-    // Using a proxy or direct fetch depending on environment
-    const response = await fetch(url);
-    if (!response.ok) throw new Error('Google Places API error');
+    // Call our server-side proxy to avoid CORS issues and protect API key
+    const response = await fetch(`/api/places?lat=${lat}&lon=${lon}&radius=${radius}&type=${types.join('|')}&lang=${lang}`);
+    if (!response.ok) throw new Error('API Proxy error');
     const data = await response.json();
     
     if (data.results && data.results.length > 0) {
@@ -343,40 +339,40 @@ export const getDynamicFallbackEvacuationData = (coords: Coordinates, cityName: 
       type: t.med_shelter, 
       status: 'Open', 
       capacity: 950, 
-      distance: '1.2 km', 
-      directionsUrl: `https://www.google.com/maps/search/?api=1&query=${lat + 0.008},${lon + 0.008}`, 
-      lat: lat + 0.008, 
-      lon: lon + 0.008 
+      distance: '0.8 km', 
+      directionsUrl: `https://www.google.com/maps/search/?api=1&query=${lat + 0.004},${lon - 0.003}`, 
+      lat: lat + 0.004, 
+      lon: lon - 0.003 
     },
     { 
       name: t.pavilion(cleanCity), 
       type: t.comm_center, 
       status: 'Open', 
       capacity: 1800, 
-      distance: '2.5 km', 
-      directionsUrl: `https://www.google.com/maps/search/?api=1&query=${lat - 0.015},${lon - 0.012}`, 
-      lat: lat - 0.015, 
-      lon: lon - 0.012 
+      distance: '1.5 km', 
+      directionsUrl: `https://www.google.com/maps/search/?api=1&query=${lat - 0.006},${lon + 0.005}`, 
+      lat: lat - 0.006, 
+      lon: lon + 0.005 
     },
     { 
       name: t.school(cleanCity), 
       type: t.school_type, 
       status: 'Open', 
       capacity: 750, 
-      distance: '3.1 km', 
-      directionsUrl: `https://www.google.com/maps/search/?api=1&query=${lat + 0.022},${lon - 0.005}`, 
-      lat: lat + 0.022, 
-      lon: lon - 0.005 
+      distance: '2.1 km', 
+      directionsUrl: `https://www.google.com/maps/search/?api=1&query=${lat + 0.009},${lon + 0.002}`, 
+      lat: lat + 0.009, 
+      lon: lon + 0.002 
     },
     { 
       name: t.hub(cleanCity), 
       type: t.emerg_svcs, 
       status: 'Open', 
       capacity: 500, 
-      distance: '4.8 km', 
-      directionsUrl: `https://www.google.com/maps/search/?api=1&query=${lat - 0.025},${lon + 0.018}`, 
-      lat: lat - 0.025, 
-      lon: lon + 0.018 
+      distance: '3.2 km', 
+      directionsUrl: `https://www.google.com/maps/search/?api=1&query=${lat - 0.003},${lon - 0.008}`, 
+      lat: lat - 0.003, 
+      lon: lon - 0.008 
     },
   ];
 };
