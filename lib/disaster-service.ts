@@ -339,40 +339,40 @@ export const getDynamicFallbackEvacuationData = (coords: Coordinates, cityName: 
       type: t.med_shelter, 
       status: 'Open', 
       capacity: 950, 
-      distance: '0.8 km', 
-      directionsUrl: `https://www.google.com/maps/search/?api=1&query=${lat + 0.004},${lon - 0.003}`, 
-      lat: lat + 0.004, 
-      lon: lon - 0.003 
+      distance: '1.2 km', 
+      directionsUrl: `https://www.google.com/maps/search/?api=1&query=${lat + 0.006},${lon + 0.012}`, 
+      lat: lat + 0.006, 
+      lon: lon + 0.012 
     },
     { 
       name: t.pavilion(cleanCity), 
       type: t.comm_center, 
       status: 'Open', 
       capacity: 1800, 
-      distance: '1.5 km', 
-      directionsUrl: `https://www.google.com/maps/search/?api=1&query=${lat - 0.006},${lon + 0.005}`, 
-      lat: lat - 0.006, 
-      lon: lon + 0.005 
+      distance: '2.5 km', 
+      directionsUrl: `https://www.google.com/maps/search/?api=1&query=${lat - 0.012},${lon + 0.018}`, 
+      lat: lat - 0.012, 
+      lon: lon + 0.018 
     },
     { 
       name: t.school(cleanCity), 
       type: t.school_type, 
       status: 'Open', 
       capacity: 750, 
-      distance: '2.1 km', 
-      directionsUrl: `https://www.google.com/maps/search/?api=1&query=${lat + 0.009},${lon + 0.002}`, 
-      lat: lat + 0.009, 
-      lon: lon + 0.002 
+      distance: '3.1 km', 
+      directionsUrl: `https://www.google.com/maps/search/?api=1&query=${lat + 0.015},${lon + 0.008}`, 
+      lat: lat + 0.015, 
+      lon: lon + 0.008 
     },
     { 
       name: t.hub(cleanCity), 
       type: t.emerg_svcs, 
       status: 'Open', 
       capacity: 500, 
-      distance: '3.2 km', 
-      directionsUrl: `https://www.google.com/maps/search/?api=1&query=${lat - 0.003},${lon - 0.008}`, 
-      lat: lat - 0.003, 
-      lon: lon - 0.008 
+      distance: '4.8 km', 
+      directionsUrl: `https://www.google.com/maps/search/?api=1&query=${lat - 0.008},${lon + 0.025}`, 
+      lat: lat - 0.008, 
+      lon: lon + 0.025 
     },
   ];
 };
