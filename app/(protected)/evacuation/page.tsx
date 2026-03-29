@@ -116,7 +116,7 @@ export default function EvacuationPage() {
                 return (
                   <div 
                     key={index} 
-                    className={`bg-[#0a1228] border ${isSafest ? 'border-blue-500/50 shadow-blue-900/20' : 'border-blue-900/40'} p-5 rounded-xl shadow-xl hover:-translate-y-1 transition-all relative overflow-hidden`}
+                    className={`bg-[#0a1228] border ${isSafest ? 'border-blue-500/50 shadow-blue-900/20' : 'border-blue-900/40'} p-5 rounded-xl shadow-xl hover:-translate-y-1 transition-all relative flex flex-col min-h-[180px]`}
                   >
                     {isSafest && (
                       <div className="absolute top-0 right-0 bg-blue-600 text-[8px] font-black text-white px-2 py-0.5 rounded-bl-lg uppercase tracking-wider z-10">
@@ -129,23 +129,24 @@ export default function EvacuationPage() {
                       <span className="bg-green-500/20 text-green-400 text-[10px] font-bold px-2 py-0.5 rounded shrink-0 uppercase">{t('status-open') || 'OPEN'}</span>
                     </div>
                     
-                    <div className="flex gap-4 text-sm text-[#94a3b8] mb-3">
-                      <span className="flex items-center gap-1.5 text-blue-400 font-medium"><Navigation size={14} /> {center.distance}</span>
-                      <span className="flex items-center gap-1.5"><Users size={14} /> {center.capacity || 200} {t('capacity-label')}</span>
-                    </div>
-
-                    <div className="text-[10px] text-[#64748b] mb-4 flex gap-2">
-                       <span className="bg-white/5 px-2 py-0.5 rounded italic">{t(center.type.toLowerCase().replace(' ', '_')) || center.type}</span>
+                    <div className="flex flex-col gap-2 mb-4">
+                      <div className="flex gap-4 text-xs text-[#94a3b8]">
+                        <span className="flex items-center gap-1.5 text-blue-400 font-medium"><Navigation size={12} /> {center.distance}</span>
+                        <span className="flex items-center gap-1.5"><Users size={12} /> {center.capacity || 200} {t('capacity-label')}</span>
+                      </div>
+                      <div className="text-[10px] text-[#64748b]">
+                         <span className="bg-white/5 px-2 py-0.5 rounded italic lowercase">{t(center.type.toLowerCase().replace(/ /g, '_')) || center.type}</span>
+                      </div>
                     </div>
                     
-                    <div className="grid grid-cols-2 gap-3 mt-auto">
+                    <div className="grid grid-cols-2 gap-3 pt-2 mt-auto">
                       <a 
                         href={center.directionsUrl} 
                         target="_blank" 
                         rel="noreferrer"
-                        className="bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg flex items-center justify-center gap-2 font-bold transition-colors shadow-lg shadow-blue-900/20 text-[11px]"
+                        className="bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg flex items-center justify-center gap-2 font-bold transition-colors shadow-lg shadow-blue-900/20 text-[10px] uppercase tracking-tighter"
                       >
-                        <MapPin size={14} /> {t('get-directions')}
+                        <MapPin size={12} /> {t('get-directions')}
                       </a>
                       <button 
                         onClick={() => {
@@ -153,9 +154,9 @@ export default function EvacuationPage() {
                             setSelectedCoords([center.lat, center.lon]);
                           }
                         }}
-                        className="bg-transparent border border-blue-900 text-blue-400 hover:bg-blue-900/30 py-2 rounded-lg flex items-center justify-center gap-2 font-medium transition-colors text-[11px]"
+                        className="bg-transparent border border-blue-900/60 text-blue-400 hover:bg-blue-900/30 py-2 rounded-lg flex items-center justify-center gap-2 font-bold transition-colors text-[10px] uppercase tracking-tighter"
                       >
-                        <Target size={14} /> {t('locate-on-map')}
+                        <Target size={12} /> {t('locate-on-map')}
                       </button>
                     </div>
                   </div>
