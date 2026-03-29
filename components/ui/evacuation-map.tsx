@@ -95,15 +95,15 @@ export default function EvacuationMap({ centers, userCoords, selectedCoords }: E
               <Popup>
                 <div className="text-[#0f172a] p-1">
                   <div className="font-bold border-b mb-1 pb-1">{c.name}</div>
-                  <div className="text-xs text-blue-600 font-bold uppercase mb-1">{c.type}</div>
-                  <div className="text-xs mb-2">{c.distance} from your location</div>
+                  <div className="text-xs mb-3">{c.distance} {t('from-your-location') || 'from your location'}</div>
                   <a 
                     href={c.directionsUrl} 
                     target="_blank" 
                     rel="noreferrer"
-                    className="w-full block text-center bg-blue-600 hover:bg-blue-700 text-white px-2 py-1.5 rounded text-xs no-underline font-bold transition-colors"
+                    className="w-full block text-center bg-[#2563eb] hover:bg-blue-700 text-white !text-white px-2 py-2 rounded text-xs no-underline font-bold transition-colors shadow-sm"
+                    style={{ color: 'white !important' }}
                   >
-                    Get Directions
+                    {t('get-directions')}
                   </a>
                 </div>
               </Popup>
