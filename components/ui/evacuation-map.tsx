@@ -5,6 +5,7 @@ import { MapContainer, TileLayer, Marker, Popup, CircleMarker, useMap } from 're
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { EvacuationCenter, Coordinates } from '@/lib/disaster-service';
+import { useDisasterData } from '@/components/providers/DisasterProvider';
 
 // Custom icon creation moved inside to avoid SSR crashes
 // Custom icon creation based on type
@@ -51,6 +52,7 @@ interface EvacuationMapProps {
 }
 
 export default function EvacuationMap({ centers, userCoords, selectedCoords }: EvacuationMapProps) {
+  const { t } = useDisasterData();
   const [mounted, setMounted] = React.useState(false);
   React.useEffect(() => {
     setMounted(true);
@@ -100,8 +102,7 @@ export default function EvacuationMap({ centers, userCoords, selectedCoords }: E
                     href={c.directionsUrl} 
                     target="_blank" 
                     rel="noreferrer"
-                    className="w-full block text-center bg-[#2563eb] hover:bg-blue-700 text-white !text-white px-2 py-2 rounded text-xs no-underline font-bold transition-colors shadow-sm"
-                    style={{ color: 'white !important' }}
+                    className="w-full block text-center bg-[#2563eb] hover:bg-blue-700 !text-white px-2 py-2 rounded text-xs no-underline font-bold transition-colors shadow-sm"
                   >
                     {t('get-directions')}
                   </a>
