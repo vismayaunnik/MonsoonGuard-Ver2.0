@@ -72,8 +72,8 @@ export const DisasterProvider = ({ children }: { children: React.ReactNode }) =>
       setCoords(locationInfo.coords);
       setCity(locationInfo.city);
 
-      // 2. Fetch all data
-      const disasterData = await fetchAllDisasterData(locationInfo.coords, locationInfo.city);
+      // 2. Fetch all data with current language
+      const disasterData = await fetchAllDisasterData(locationInfo.coords, locationInfo.city, language);
       setData(disasterData);
     } catch (error) {
       console.error("Failed to initialize disaster data", error);
@@ -92,7 +92,7 @@ export const DisasterProvider = ({ children }: { children: React.ReactNode }) =>
     const coords = { lat, lon };
     setCoords(coords);
     setCity(cityName);
-    const disasterData = await fetchAllDisasterData(coords, cityName);
+    const disasterData = await fetchAllDisasterData(coords, cityName, language);
     setData(disasterData);
     setLocationError(null);
     setShowLocationModal(false);
@@ -101,7 +101,7 @@ export const DisasterProvider = ({ children }: { children: React.ReactNode }) =>
 
   useEffect(() => {
     initData();
-  }, []);
+  }, [language]); // Re-fetch when language changes to get translated center names
 
   return (
     <DisasterContext.Provider value={{ 

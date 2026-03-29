@@ -197,8 +197,8 @@ export const fetchFloodData = async (coords: Coordinates, weatherData: WeatherDa
   }
 };
 
-export const fetchEvacuationCenters = async (coords: Coordinates, cityName: string = 'Local'): Promise<EvacuationCenter[]> => {
-  const cacheKey = `centers_${coords.lat}_${coords.lon}`;
+export const fetchEvacuationCenters = async (coords: Coordinates, cityName: string = 'Local', lang: string = 'en'): Promise<EvacuationCenter[]> => {
+  const cacheKey = `centers_${coords.lat}_${coords.lon}_${lang}`;
   const cached = getCachedData(cacheKey);
   if (cached) return cached;
 
@@ -211,7 +211,7 @@ export const fetchEvacuationCenters = async (coords: Coordinates, cityName: stri
   try {
     // Note: In a real app, this should probably be proxied through a backend to hide API key
     // For this implementation, we'll use a direct fetch or a proxy if available
-    const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lon}&radius=${radius}&type=${types.join('|')}&key=${GOOGLE_MAPS_API_KEY}`;
+    const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lon}&radius=${radius}&type=${types.join('|')}&key=${GOOGLE_MAPS_API_KEY}&language=${lang}`;
     
     // Using a proxy or direct fetch depending on environment
     const response = await fetch(url);
@@ -256,7 +256,7 @@ export const fetchEvacuationCenters = async (coords: Coordinates, cityName: stri
   }
 };
 
-const fetchOverpassCenters = async (coords: Coordinates, cityName: string): Promise<EvacuationCenter[]> => {
+const fetchOverpassCenters = async (coords: Coordinates, cityName: string, lang: string = 'en'): Promise<EvacuationCenter[]> => {
   const { lat, lon } = coords;
   const query = `[out:json][timeout:6];
     (
@@ -273,7 +273,7 @@ const fetchOverpassCenters = async (coords: Coordinates, cityName: string): Prom
     if (data.elements && data.elements.length > 0) {
       return data.elements.map((el: any) => {
         const centerLat = el.lat || el.center?.lat;
-        const centerLon = el.lon || el.center?.lon;
+        const centerLon = el.lon || el.center?.lng;
         const distance = calculateDistance(lat, lon, centerLat, centerLon);
         
         return {
@@ -290,18 +290,57 @@ const fetchOverpassCenters = async (coords: Coordinates, cityName: string): Prom
     }
     throw new Error('No elements found');
   } catch (err) {
-    return getDynamicFallbackEvacuationData(coords, cityName);
+    return getDynamicFallbackEvacuationData(coords, cityName, lang);
   }
 };
 
-export const getDynamicFallbackEvacuationData = (coords: Coordinates, cityName: string): EvacuationCenter[] => {
+const centerTranslations: Record<string, any> = {
+  en: {
+    hospital: (city: string) => `${city} Regional Emergency Hospital`,
+    pavilion: (city: string) => `${city} Community Safety Pavilion`,
+    school: (city: string) => `${city} Public Relief School`,
+    hub: (city: string) => `${city} District Response Hub`,
+    med_shelter: 'Medical Shelter', comm_center: 'Community Center', school_type: 'School', emerg_svcs: 'Emergency Services'
+  },
+  hi: {
+    hospital: (city: string) => `${city} क्षेत्रीय आपातकालीन अस्पताल`,
+    pavilion: (city: string) => `${city} सामुदायिक सुरक्षा मंडप`,
+    school: (city: string) => `${city} सार्वजनिक राहत स्कूल`,
+    hub: (city: string) => `${city} जिला प्रतिक्रिया केंद्र`,
+    med_shelter: 'चिकित्सा आश्रय', comm_center: 'सामुदायिक केंद्र', school_type: 'स्कूल', emerg_svcs: 'आपातकालीन सेवाएं'
+  },
+  bn: {
+    hospital: (city: string) => `${city} আঞ্চলিক জরুরি হাসপাতাল`,
+    pavilion: (city: string) => `${city} কমিউনিটি সুরক্ষা প্যাভিলিয়ন`,
+    school: (city: string) => `${city} পাবলিক রিলিফ স্কুল`,
+    hub: (city: string) => `${city} জেলা প্রতিক্রিয়া হাব`,
+    med_shelter: 'চিকিৎসা আশ্রয়', comm_center: 'কমিউনিটি সেন্টার', school_type: 'স্কুল', emerg_svcs: 'জরুরি পরিষেবা'
+  },
+  ml: {
+    hospital: (city: string) => `${city} റീജിയണൽ എമർജൻസി ഹോസ്പിറ്റൽ`,
+    pavilion: (city: string) => `${city} കമ്മ്യൂണിറ്റി സേഫ്റ്റി പവിലിയൻ`,
+    school: (city: string) => `${city} പബ്ലിക് റിലീഫ് സ്കൂൾ`,
+    hub: (city: string) => `${city} ഡിസ്ട്രിക്റ്റ് റെസ്‌പോൺസ് ഹബ്ബ്`,
+    med_shelter: 'മെഡിക്കൽ ഷെൽട്ടർ', comm_center: 'കമ്മ്യൂണിറ്റി സെന്റർ', school_type: 'സ്കൂൾ', emerg_svcs: 'എമർജൻസി സർവീസസ്'
+  },
+  te: {
+    hospital: (city: string) => `${city} ప్రాంతీయ అత్యవసర ఆసుపత్రి`,
+    pavilion: (city: string) => `${city} కమ్యూనిటీ సేఫ్టీ పావిలియన్`,
+    school: (city: string) => `${city} పబ్లిక్ రిలీఫ్ స్కూల్`,
+    hub: (city: string) => `${city} జిల్లా ప్రతిస్పందన హబ్`,
+    med_shelter: 'వైద్య ఆశ్రయం', comm_center: 'కమ్యూనిటీ సెంటర్', school_type: 'పాఠశాల', emerg_svcs: 'అత్యవసర సేవలు'
+  }
+};
+
+export const getDynamicFallbackEvacuationData = (coords: Coordinates, cityName: string, lang: string = 'en'): EvacuationCenter[] => {
   const { lat, lon } = coords;
   const cleanCity = cityName.split(',')[0].trim();
+  const t = centerTranslations[lang] || centerTranslations.en;
 
   return [
     { 
-      name: `${cleanCity} Regional Emergency Hospital`, 
-      type: 'Medical Shelter', 
+      name: t.hospital(cleanCity), 
+      type: t.med_shelter, 
       status: 'Open', 
       capacity: 950, 
       distance: '1.2 km', 
@@ -310,8 +349,8 @@ export const getDynamicFallbackEvacuationData = (coords: Coordinates, cityName: 
       lon: lon + 0.008 
     },
     { 
-      name: `${cleanCity} Community Safety Pavilion`, 
-      type: 'Community Center', 
+      name: t.pavilion(cleanCity), 
+      type: t.comm_center, 
       status: 'Open', 
       capacity: 1800, 
       distance: '2.5 km', 
@@ -320,8 +359,8 @@ export const getDynamicFallbackEvacuationData = (coords: Coordinates, cityName: 
       lon: lon - 0.012 
     },
     { 
-      name: `${cleanCity} Public Relief School`, 
-      type: 'School', 
+      name: t.school(cleanCity), 
+      type: t.school_type, 
       status: 'Open', 
       capacity: 750, 
       distance: '3.1 km', 
@@ -330,8 +369,8 @@ export const getDynamicFallbackEvacuationData = (coords: Coordinates, cityName: 
       lon: lon - 0.005 
     },
     { 
-      name: `${cleanCity} District Response Hub`, 
-      type: 'Emergency Services', 
+      name: t.hub(cleanCity), 
+      type: t.emerg_svcs, 
       status: 'Open', 
       capacity: 500, 
       distance: '4.8 km', 
@@ -342,11 +381,11 @@ export const getDynamicFallbackEvacuationData = (coords: Coordinates, cityName: 
   ];
 };
 
-export const fetchAllDisasterData = async (coords: Coordinates, cityName: string = 'Local'): Promise<DisasterData> => {
+export const fetchAllDisasterData = async (coords: Coordinates, cityName: string = 'Local', lang: string = 'en'): Promise<DisasterData> => {
   const weather = await fetchWeather(coords);
   const [flood, evacuation] = await Promise.all([
     fetchFloodData(coords, weather),
-    fetchEvacuationCenters(coords, cityName)
+    fetchEvacuationCenters(coords, cityName, lang)
   ]);
   
   return {
