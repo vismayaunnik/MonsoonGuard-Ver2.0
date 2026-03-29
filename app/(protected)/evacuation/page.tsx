@@ -129,13 +129,10 @@ export default function EvacuationPage() {
                       <span className="bg-green-500/20 text-green-400 text-[10px] font-bold px-2 py-0.5 rounded shrink-0 uppercase">{t('status-open') || 'OPEN'}</span>
                     </div>
                     
-                    <div className="flex flex-col gap-2 mb-4">
+                    <div className="flex flex-col gap-2 mb-2">
                       <div className="flex gap-4 text-xs text-[#94a3b8]">
                         <span className="flex items-center gap-1.5 text-blue-400 font-medium"><Navigation size={12} /> {center.distance}</span>
                         <span className="flex items-center gap-1.5"><Users size={12} /> {center.capacity || 200} {t('capacity-label')}</span>
-                      </div>
-                      <div className="text-[10px] text-[#64748b]">
-                         <span className="bg-white/5 px-2 py-0.5 rounded italic lowercase">{t(center.type.toLowerCase().replace(/ /g, '_')) || center.type}</span>
                       </div>
                     </div>
                     
