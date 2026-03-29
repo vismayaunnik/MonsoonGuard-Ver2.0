@@ -7,16 +7,23 @@ import 'leaflet/dist/leaflet.css';
 import { EvacuationCenter, Coordinates } from '@/lib/disaster-service';
 
 // Custom icon creation moved inside to avoid SSR crashes
-const createCustomIcon = () => {
+// Custom icon creation based on type
+const getIcon = (type: string) => {
   if (typeof window === 'undefined') return null;
-  return new L.Icon({
-    iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-    iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41]
+  
+  let color = 'blue';
+  const t = type.toLowerCase();
+  if (t.includes('hospital')) color = 'red';
+  else if (t.includes('school')) color = 'orange';
+  else if (t.includes('worship') || t.includes('mosque') || t.includes('temple') || t.includes('church')) color = 'green';
+
+  // Using standard Leaflet icons with filter or custom URLs if available
+  // For now, let's use a colored div icon for more flexibility
+  return L.divIcon({
+    className: 'custom-div-icon',
+    html: `<div style="background-color: ${color}; width: 12px; height: 12px; border: 2px solid white; border-radius: 50%; box-shadow: 0 0 10px rgba(0,0,0,0.5);"></div>`,
+    iconSize: [12, 12],
+    iconAnchor: [6, 6]
   });
 };
 
@@ -51,9 +58,6 @@ export default function EvacuationMap({ centers, userCoords, selectedCoords }: E
 
   const defaultCenter = [19.0760, 72.8777] as [number, number];
   const center = userCoords ? [userCoords.lat, userCoords.lon] as [number, number] : defaultCenter;
-  
-  // Create icon on client-side only
-  const customIcon = React.useMemo(() => createCustomIcon(), []);
 
   if (!mounted || typeof window === 'undefined') {
     return (
@@ -84,25 +88,28 @@ export default function EvacuationMap({ centers, userCoords, selectedCoords }: E
         )}
         <MapUpdater coords={userCoords} selectedCoords={selectedCoords || null} />
 
-        {centers.map((c, i) => (
-          c.lat && c.lon && customIcon && (
-            <Marker key={i} position={[c.lat, c.lon]} icon={customIcon}>
+        {centers.map((c, i) => {
+          const icon = getIcon(c.type);
+          return c.lat && c.lon && icon && (
+            <Marker key={i} position={[c.lat, c.lon]} icon={icon}>
               <Popup>
-                <strong>{c.name}</strong><br/>
-                {c.type}<br/>
-                {c.capacity} capacity<br/>
-                <a 
-                  href={c.directionsUrl} 
-                  target="_blank" 
-                  rel="noreferrer"
-                  className="mt-2 inline-block bg-blue-600 text-white px-2 py-1 rounded text-xs no-underline"
-                >
-                  Get Directions
-                </a>
+                <div className="text-[#0f172a] p-1">
+                  <div className="font-bold border-b mb-1 pb-1">{c.name}</div>
+                  <div className="text-xs text-blue-600 font-bold uppercase mb-1">{c.type}</div>
+                  <div className="text-xs mb-2">{c.distance} from your location</div>
+                  <a 
+                    href={c.directionsUrl} 
+                    target="_blank" 
+                    rel="noreferrer"
+                    className="w-full block text-center bg-blue-600 hover:bg-blue-700 text-white px-2 py-1.5 rounded text-xs no-underline font-bold transition-colors"
+                  >
+                    Get Directions
+                  </a>
+                </div>
               </Popup>
             </Marker>
-          )
-        ))}
+          );
+        })}
       </MapContainer>
     </div>
   );
