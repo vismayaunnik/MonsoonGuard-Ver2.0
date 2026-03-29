@@ -65,9 +65,17 @@ Navigate your web browser to: http://localhost:3000
 
 ## APIs & Endpoints Used
 
-- **Open-Meteo API**: Fetches current regional telemetry, precise temperatures, and multi-day meteorological forecasting dynamically.
-- **Overpass API (OSM)**: Powerful map tile querying engine utilized to detect main rivers, real-time emergency shelters, and relief routing dynamically based on user coordinate bounding boxes.
-- **OpenStreetMap & Nominatim**: Core mapping protocol used for rendering interactive UI map tiles and performing exact reverse-geocoding of the user's detected position into readable City/District layers.
+- **Ambee Flood API**: Core service used for real-time flood risk assessment and water level telemetry (`/flood/latest/by-lat-lng`).
+- **Google Places API**: Powering the discovery of schools, hospitals, and places of worship for evacuation centers.
+- **Open-Meteo API**: Fetches current regional telemetry and multi-day meteorological forecasting dynamically.
+- **OpenStreetMap & Nominatim**: Mapping protocol and India-restricted geocoding for city-based location validation.
+
+## 🚀 Deployment (Vercel)
+
+1. **Push to GitHub**: Every push to the `main` branch triggers an automatic Vercel deployment.
+2. **Environment Variables**: You MUST configure the following in your Vercel Dashboard:
+   - `NEXT_PUBLIC_AMBEE_API_KEY`
+   - `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`
 
 ## Future Improvements
 - AI-based flood prediction models utilizing historical telemetry

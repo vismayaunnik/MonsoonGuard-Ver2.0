@@ -46,9 +46,16 @@ MonsoonGuard is a comprehensive, full-stack disaster management dashboard built 
 
 ## 🔑 Environment Configuration
 
-Currently, critical systems respond to a local simulated data context to guarantee zero-latency execution. However, scaling it up requires connecting keys in the `.env` root:
-- `NEXT_PUBLIC_WEATHER_API_KEY`: Keys for integrating upstream meteorological telemetry.
-- `NEXT_PUBLIC_MAPBOX_TOKEN`: For downstream map tile generation.
+Integration with live emergency services requires the following keys in your `.env.local` or Vercel Environment Variables:
+- `NEXT_PUBLIC_AMBEE_API_KEY`: Fetches real-time flood risk data and water level telemetry.
+- `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`: Powering evacuation center discovery and routing (Places API).
+- `NEXT_PUBLIC_WEATHER_API_KEY`: Optional upstream meteorological telemetry.
+
+## 🚀 Deployment (Vercel)
+
+MonsoonGuard is fully optimized for **Vercel**. 
+1. **GitHub Sync**: Pushing changes to the `main` branch automatically triggers a production build.
+2. **Environment Variables**: Ensure you have added the keys above in the **Vercel Project Settings > Environment Variables** tab to enable live data in production.
 
 ## 📂 Architecture & Directory Structure
 
