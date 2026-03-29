@@ -20,25 +20,11 @@ const EvacuationMap = dynamic(() => import('@/components/ui/evacuation-map'), {
 export default function EvacuationPage() {
   const { data, coords, loading, t, refreshData } = useDisasterData();
   const router = useRouter();
-  const [activeFilters, setActiveFilters] = useState<string[]>([]);
   const [selectedCoords, setSelectedCoords] = useState<[number, number] | null>(null);
 
-  const toggleFilter = (filter: string) => {
-    setActiveFilters((prev: string[]) => 
-      prev.includes(filter) ? prev.filter((f: string) => f !== filter) : [...prev, filter]
-    );
-  };
-
   const centers = useMemo(() => {
-    if (!data?.evacuation) return [];
-    let filtered = data.evacuation;
-    if (activeFilters.length > 0) {
-      filtered = filtered.filter((center: any) => 
-        activeFilters.some((filter: string) => center.type.toLowerCase().includes(filter.toLowerCase()))
-      );
-    }
-    return filtered;
-  }, [data?.evacuation, activeFilters]);
+    return data?.evacuation || [];
+  }, [data?.evacuation]);
 
   // Safest 3 (assuming already sorted by priority/distance in service)
   const topSafest = useMemo(() => centers.slice(0, 3), [centers]);
@@ -88,27 +74,10 @@ export default function EvacuationPage() {
             <p className="text-sm text-[#94a3b8]">{t('nearby-centers-desc') || 'Safe Zones & Emergency Shelters'}</p>
           </div>
         </div>
-
-        {/* Filters */}
-        <div className="flex flex-wrap gap-2">
-          {['Hospital', 'School', 'Worship'].map((filter) => (
-            <button
-              key={filter}
-              onClick={() => toggleFilter(filter.toLowerCase())}
-              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all border ${
-                activeFilters.includes(filter.toLowerCase())
-                  ? 'bg-blue-600 border-blue-500 text-white shadow-lg shadow-blue-900/40'
-                  : 'bg-[#0a1228] border-blue-900/40 text-blue-400 hover:border-blue-700'
-              }`}
-            >
-              {t(filter.toLowerCase()) || filter}
-            </button>
-          ))}
-        </div>
       </div>
 
       {/* Flood Risk Banner if High */}
-      {data.flood.risk === 'High' || data.flood.risk === 'Critical' ? (
+      {(data.flood.risk === 'High' || data.flood.risk === 'Critical') && (
         <div className="bg-red-500/10 border border-red-500/40 p-4 rounded-xl flex items-center gap-3 text-red-400">
           <div className="bg-red-500 p-2 rounded-lg">
             <Loader2 className="animate-pulse" size={20} />
@@ -118,7 +87,7 @@ export default function EvacuationPage() {
             <p className="text-sm opacity-80">{t('evacuation-necessary') || 'Immediate evacuation may be necessary in low-lying areas.'}</p>
           </div>
         </div>
-      ) : null}
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-8">
         
@@ -136,22 +105,21 @@ export default function EvacuationPage() {
             </span>
           </div>
           
-          <div className="flex flex-col gap-4 overflow-y-auto max-h-[550px] pr-2 custom-scrollbar">
+          <div className="flex flex-col gap-4 overflow-y-auto max-h-[650px] pr-2 custom-scrollbar">
             {centers.length === 0 ? (
               <div className="bg-[#0a1228] p-6 rounded-xl text-center text-[#94a3b8] border border-blue-900/40 shadow-xl">
                 {t('no-centers')}
               </div>
             ) : (
-              centers.map((center, index) => {
+              centers.map((center: any, index: number) => {
                 const isSafest = topSafest.includes(center);
                 return (
                   <div 
                     key={index} 
                     className={`bg-[#0a1228] border ${isSafest ? 'border-blue-500/50 shadow-blue-900/20' : 'border-blue-900/40'} p-5 rounded-xl shadow-xl hover:-translate-y-1 transition-all relative overflow-hidden`}
-                    style={{ animationDelay: `${index * 0.1}s` }}
                   >
                     {isSafest && (
-                      <div className="absolute top-0 right-0 bg-blue-600 text-[8px] font-black text-white px-2 py-0.5 rounded-bl-lg uppercase tracking-wider">
+                      <div className="absolute top-0 right-0 bg-blue-600 text-[8px] font-black text-white px-2 py-0.5 rounded-bl-lg uppercase tracking-wider z-10">
                         {t('safest-priority') || 'Safest Priority'}
                       </div>
                     )}
@@ -161,23 +129,23 @@ export default function EvacuationPage() {
                       <span className="bg-green-500/20 text-green-400 text-[10px] font-bold px-2 py-0.5 rounded shrink-0 uppercase">{t('status-open') || 'OPEN'}</span>
                     </div>
                     
-                    <div className="flex gap-4 text-sm text-[#94a3b8] mb-4">
+                    <div className="flex gap-4 text-sm text-[#94a3b8] mb-3">
                       <span className="flex items-center gap-1.5 text-blue-400 font-medium"><Navigation size={14} /> {center.distance}</span>
-                      <span className="flex items-center gap-1.5"><Users size={14} /> {center.capacity || 200} {t('capacity-label') || 'Capacity'}</span>
+                      <span className="flex items-center gap-1.5"><Users size={14} /> {center.capacity || 200} {t('capacity-label')}</span>
                     </div>
 
                     <div className="text-[10px] text-[#64748b] mb-4 flex gap-2">
                        <span className="bg-white/5 px-2 py-0.5 rounded italic">{t(center.type.toLowerCase().replace(' ', '_')) || center.type}</span>
                     </div>
                     
-                    <div className="flex flex-col gap-3">
+                    <div className="grid grid-cols-2 gap-3 mt-auto">
                       <a 
                         href={center.directionsUrl} 
                         target="_blank" 
                         rel="noreferrer"
-                        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg flex items-center justify-center gap-2 font-bold transition-colors shadow-lg shadow-blue-900/20 text-sm"
+                        className="bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg flex items-center justify-center gap-2 font-bold transition-colors shadow-lg shadow-blue-900/20 text-[11px]"
                       >
-                        <MapPin size={16} /> {t('get-directions')}
+                        <MapPin size={14} /> {t('get-directions')}
                       </a>
                       <button 
                         onClick={() => {
@@ -185,9 +153,9 @@ export default function EvacuationPage() {
                             setSelectedCoords([center.lat, center.lon]);
                           }
                         }}
-                        className="w-full bg-transparent border border-blue-900 text-blue-400 hover:bg-blue-900/30 py-2 rounded-lg flex items-center justify-center gap-2 font-medium transition-colors text-sm"
+                        className="bg-transparent border border-blue-900 text-blue-400 hover:bg-blue-900/30 py-2 rounded-lg flex items-center justify-center gap-2 font-medium transition-colors text-[11px]"
                       >
-                        <Target size={16} /> {t('locate-on-map')}
+                        <Target size={14} /> {t('locate-on-map')}
                       </button>
                     </div>
                   </div>
