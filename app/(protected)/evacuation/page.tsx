@@ -6,13 +6,13 @@ import { ArrowLeft, Loader2, Navigation, MapPin, Users, Target, AlertTriangle } 
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 
-// Dynamically import the Leaflet map with SSR disabled. moved outside for correctness
+// Dynamically import the Leaflet map with SSR disabled
 const EvacuationMap = dynamic(() => import('@/components/ui/evacuation-map'), { 
   ssr: false,
   loading: () => (
     <div className="w-full h-full min-h-[550px] bg-[#0a1228] border border-blue-900/40 rounded-2xl flex flex-col items-center justify-center text-blue-400">
       <Loader2 className="animate-spin mb-4" size={32} />
-      <p>Preparing emergency map...</p>
+      <p>Loading emergency map...</p>
     </div>
   )
 });
@@ -20,6 +20,9 @@ const EvacuationMap = dynamic(() => import('@/components/ui/evacuation-map'), {
 export default function EvacuationPage() {
   const { data, coords, loading, t, refreshData } = useDisasterData();
   const router = useRouter();
+  const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const [selectedCoords, setSelectedCoords] = useState<[number, number] | null>(null);
+
   const toggleFilter = (filter: string) => {
     setActiveFilters((prev: string[]) => 
       prev.includes(filter) ? prev.filter((f: string) => f !== filter) : [...prev, filter]
@@ -98,7 +101,7 @@ export default function EvacuationPage() {
                   : 'bg-[#0a1228] border-blue-900/40 text-blue-400 hover:border-blue-700'
               }`}
             >
-              {filter}s
+              {t(filter.toLowerCase()) || filter}
             </button>
           ))}
         </div>
@@ -111,8 +114,8 @@ export default function EvacuationPage() {
             <Loader2 className="animate-pulse" size={20} />
           </div>
           <div>
-            <p className="font-bold">High Flood Risk Detected</p>
-            <p className="text-sm opacity-80">Immediate evacuation may be necessary in low-lying areas.</p>
+            <p className="font-bold">{t('high-flood-risk') || 'High Flood Risk Detected'}</p>
+            <p className="text-sm opacity-80">{t('evacuation-necessary') || 'Immediate evacuation may be necessary in low-lying areas.'}</p>
           </div>
         </div>
       ) : null}
@@ -149,7 +152,7 @@ export default function EvacuationPage() {
                   >
                     {isSafest && (
                       <div className="absolute top-0 right-0 bg-blue-600 text-[8px] font-black text-white px-2 py-0.5 rounded-bl-lg uppercase tracking-wider">
-                        Safest Priority
+                        {t('safest-priority') || 'Safest Priority'}
                       </div>
                     )}
                     
@@ -160,11 +163,11 @@ export default function EvacuationPage() {
                     
                     <div className="flex gap-4 text-sm text-[#94a3b8] mb-4">
                       <span className="flex items-center gap-1.5 text-blue-400 font-medium"><Navigation size={14} /> {center.distance}</span>
-                      <span className="flex items-center gap-1.5"><Users size={14} /> {center.capacity || 200} {t('capacity-label')}</span>
+                      <span className="flex items-center gap-1.5"><Users size={14} /> {center.capacity || 200} {t('capacity-label') || 'Capacity'}</span>
                     </div>
 
                     <div className="text-[10px] text-[#64748b] mb-4 flex gap-2">
-                       <span className="bg-white/5 px-2 py-0.5 rounded italic">{center.type}</span>
+                       <span className="bg-white/5 px-2 py-0.5 rounded italic">{t(center.type.toLowerCase().replace(' ', '_')) || center.type}</span>
                     </div>
                     
                     <div className="flex flex-col gap-3">

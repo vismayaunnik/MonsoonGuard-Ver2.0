@@ -81,6 +81,29 @@ export interface DisasterData {
   timestamp: string;
 }
 
+export const searchCity = async (query: string): Promise<{ coords: Coordinates; city: string } | null> => {
+  if (!query || query.length < 2) return null;
+
+  try {
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&countrycodes=in&limit=1`,
+      { headers: { 'Accept-Language': 'en' } }
+    );
+    const data = await response.json();
+    
+    if (data && data.length > 0) {
+      const result = data[0];
+      const coords = { lat: parseFloat(result.lat), lon: parseFloat(result.lon) };
+      const city = result.display_name.split(',')[0] + ', ' + (result.display_name.split(',').slice(-2, -1)[0]?.trim() || 'India');
+      return { coords, city };
+    }
+    return null;
+  } catch (error) {
+    console.error("City search failed", error);
+    return null;
+  }
+};
+
 export const detectLocation = async (): Promise<{ coords: Coordinates; city: string; errorType?: 'PERMISSION_DENIED' | 'TECHNICAL_ERROR' }> => {
   if (typeof navigator === 'undefined' || !navigator.geolocation) {
     return { coords: { lat: 19.0760, lon: 72.8777 }, city: 'Mumbai, MH (Default)', errorType: 'TECHNICAL_ERROR' };

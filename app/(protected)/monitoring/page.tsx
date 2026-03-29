@@ -44,7 +44,7 @@ export default function MonitoringPage() {
         </button>
         <div>
           <h2 className="text-2xl font-bold text-[#f8fafc]">{t('flood-monitoring')}</h2>
-          <p className="text-sm text-[#94a3b8]">Real-time River Status & Risk Indicators</p>
+          <p className="text-sm text-[#94a3b8]">{t('river-status-desc') || 'Real-time River Status & Risk Indicators'}</p>
         </div>
       </div>
 
@@ -101,7 +101,7 @@ export default function MonitoringPage() {
                 </div>
                 <div>
                   <div className="font-bold text-[#f8fafc] text-lg">
-                    {river === 'Local Catchments' ? t('local-catchments') : river}
+                    {river === 'Ganges (Simulated)' ? t('ganges') : river === 'Local Catchments' ? t('local-catchments') : river}
                   </div>
                   <div className="text-sm text-[#94a3b8]">{t('main-stream-channel')}</div>
                 </div>

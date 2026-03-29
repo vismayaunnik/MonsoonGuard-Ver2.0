@@ -402,7 +402,7 @@ export const SignInPage = ({ className }: SignInPageProps) => {
                   {/* Title */}
                   <div className="space-y-1 mb-6 mt-12">
                     <h1 className="text-[3.2rem] font-bold leading-tight tracking-tight text-white">
-                      {t('welcome-user') ? t('welcome-user').replace(' ', '') : 'Welcome'}
+                      {t('welcome-user') ? t('welcome-user').split(' ')[0] : 'Welcome'}
                     </h1>
                   </div>
 
@@ -430,7 +430,7 @@ export const SignInPage = ({ className }: SignInPageProps) => {
 
                     <input
                       type="text"
-                      placeholder={t('app-subtitle') ? "Full Name" : "Full Name"} // Using fallback as app subtitle
+                      placeholder={t('full-name') || "Full Name"}
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       className="w-full bg-blue-950/30 text-white border border-blue-800/50 rounded-full py-3 px-5 focus:outline-none focus:border-blue-500/70 text-center placeholder:text-blue-400/40 text-sm"
@@ -440,7 +440,7 @@ export const SignInPage = ({ className }: SignInPageProps) => {
                     {/* Phone */}
                     <input
                       type="tel"
-                      placeholder="10-digit Phone Number"
+                      placeholder={t('phone-number-10') || "10-digit Phone Number"}
                       value={phone}
                       onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
                       pattern="[0-9]{10}"
@@ -455,7 +455,7 @@ export const SignInPage = ({ className }: SignInPageProps) => {
                       whileTap={{ scale: 0.98 }}
                       className="w-full rounded-full bg-blue-600 text-white font-semibold py-3 hover:bg-blue-500 transition-colors shadow-lg shadow-blue-900/50 flex items-center justify-center gap-2"
                     >
-                      Enter System
+                      {t('enter-system') || 'Enter System'}
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                     </motion.button>
                   </form>
@@ -473,7 +473,7 @@ export const SignInPage = ({ className }: SignInPageProps) => {
                     className="w-full rounded-full border border-blue-700/40 bg-blue-950/30 text-blue-200 py-3 text-sm hover:bg-blue-900/40 hover:border-blue-500/60 transition-colors flex items-center justify-center gap-2"
                   >
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
-                    Quick Demo Login
+                    {t('quick-demo-login') || 'Quick Demo Login'}
                   </button>
 
                   <p className="text-xs text-blue-400/30 pt-2">
@@ -490,10 +490,10 @@ export const SignInPage = ({ className }: SignInPageProps) => {
                 >
                   <div className="space-y-1">
                     <h1 className="text-[2.5rem] font-bold leading-tight tracking-tight text-white">
-                      You&apos;re in!
+                      {t('youre-in') || "You're in!"}
                     </h1>
                     <p className="text-[1.15rem] text-blue-300/60 font-light">
-                      Welcome, {name || "Demo User"}
+                      {t('welcome-user')?.replace('{name}', name || 'Demo User') || `Welcome, ${name || "Demo User"}`}
                     </p>
                   </div>
 
@@ -517,7 +517,7 @@ export const SignInPage = ({ className }: SignInPageProps) => {
                     onClick={() => { if (typeof window !== "undefined") window.location.href = "/dashboard"; }}
                     className="w-full rounded-full bg-blue-600 text-white font-medium py-3 hover:bg-blue-500 transition-colors shadow-lg shadow-blue-900/50"
                   >
-                    Continue to Dashboard
+                    {t('continue-dashboard') || 'Continue to Dashboard'}
                   </motion.button>
                 </motion.div>
               )}

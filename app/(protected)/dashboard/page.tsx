@@ -45,7 +45,7 @@ export default function DashboardPage() {
           <div className="md:col-span-2 grid grid-cols-3 gap-4 text-center">
             <div>
               <div className="text-2xl sm:text-3xl font-bold text-blue-400">{data.flood.rainfall || 0}mm</div>
-              <div className="text-[10px] sm:text-xs text-[#94a3b8] uppercase mt-1">Rainfall (24h)</div>
+              <div className="text-[10px] sm:text-xs text-[#94a3b8] uppercase mt-1">{t('rainfall-24h')}</div>
             </div>
             <div>
               <div className="text-2xl sm:text-3xl font-bold text-blue-400">{data.flood.forecastRain || 0}mm</div>
