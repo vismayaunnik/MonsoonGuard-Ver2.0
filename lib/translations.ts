@@ -70,7 +70,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'retry-connection': 'Retry Connection',
     'invalid-city-error': 'Invalid city or not in India. Please try again.',
     'city-placeholder': 'Enter city (e.g. Kochi, Mumbai)',
-    'all': 'All', 'worship': 'Worship'
+    'all': 'All', 'worship': 'Worship',
+    'from-your-location': 'from your location'
   },
   hi: {
     'app-title': 'मॉनसूनगार्ड', 'app-subtitle': 'बाढ़ प्रबंधन और आपातकालीन प्रतिक्रिया प्रणाली',
@@ -143,7 +144,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'city-placeholder': 'शहर दर्ज करें (उदा. कोच्चి, मुंबई)',
     'hospital': 'अस्पताल', 'school': 'स्कूल', 'place_of_worship': 'पूजा स्थल', 'mosque': 'मस्जिद', 'temple': 'मंदिर', 'church': 'चर्च',
     'preparing-map': 'आपातकालीन मानचित्र तैयार किया जा रहा है...', 'safest-priority': 'सबसे सुरक्षित प्राथमिकता',
-    'all': 'सब', 'worship': 'पूजा स्थल'
+    'all': 'सब', 'worship': 'पूजा स्थल',
+    'from-your-location': 'आपके स्थान से'
   },
   bn: {
     'app-title': 'মনসুনগার্ড', 'app-subtitle': 'বন্যা ব্যবস্থাপনা ও জরুরি প্রতিক্রিয়া সিস্টেম',
@@ -216,7 +218,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'retry-connection': 'সংযোগ পুনরায় চেষ্টা করুন',
     'invalid-city-error': 'অবৈধ শহর বা ভারতে নয়। আবার চেষ্টা করুন।',
     'city-placeholder': 'শহর লিখুন (যেমন কোচি, মুম্বাই)',
-    'all': 'সব', 'worship': 'উপাসনালয়'
+    'all': 'সব', 'worship': 'উপাসনালয়',
+    'from-your-location': 'আপনার অবস্থান থেকে'
   },
   ml: {
     'app-title': 'മൺസൂൺഗാർഡ്', 'app-subtitle': 'പ്രളയ നിയന്ത്രണവും എമർജൻസി റെസ്‌പോൺസ് സിസ്റ്റവും',
@@ -288,7 +291,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'city-placeholder': 'നഗരം രേഖപ്പെടുത്തുക (ഉദാ: കൊച്ചി, മുംബൈ)',
     'hospital': 'ആശുപത്രി', 'school': 'സ്കൂൾ', 'place_of_worship': 'ആരാധനാലയം', 'mosque': 'പള്ളി', 'temple': 'ക്ഷേത്രം', 'church': 'ചർച്ച്',
     'preparing-map': 'മാപ്പ് തയ്യാറാക്കുന്നു...', 'safest-priority': 'ഏറ്റവും സുരക്ഷിതം',
-    'all': 'എല്ലാം', 'worship': 'ആരാധനാലയം'
+    'all': 'എല്ലാം', 'worship': 'ആരാധനാലയം',
+    'from-your-location': 'നിങ്ങളുടെ സ്ഥലത്തുനിന്ന്'
   },
   te: {
     'app-title': 'మాన్‌సూన్‌గార్డ్', 'app-subtitle': 'వరద నిర్వహణ మరియు అత్యవసర ప్రతిస్పందన వ్యవస్థ',
@@ -360,6 +364,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'city-placeholder': 'నగరాన్ని నమోదు చేయండి (ఉదా: కొచ్చి, ముంబై)',
     'hospital': 'ఆసుపత్రి', 'school': 'పాఠశాల', 'place_of_worship': 'ప్రార్థనా స్థలం', 'mosque': 'మసీదు', 'temple': 'దేవాలయం', 'church': 'చర్చి',
     'preparing-map': 'మ్యాప్ సిద్ధం చేయబడుతోంది...', 'safest-priority': 'అత్యంత సురక్షితమైనది',
-    'all': 'అన్నీ', 'worship': 'ప్రార్థనా స్థలం'
+    'all': 'అన్నీ', 'worship': 'ప్రార్థనా స్థలం',
+    'from-your-location': 'మీ స్థానం నుండి'
   }
 };
