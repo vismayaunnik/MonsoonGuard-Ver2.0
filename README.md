@@ -45,7 +45,7 @@ Available in:
 **Three.js** 
 **Leaflet**
 
-## Live Demo
+## Live Link
 
 **https://monsoon-guard-ver2-0.vercel.app/**
 
@@ -77,7 +77,7 @@ Available in:
 
 ```text
 /monsoonguard-react
-├── app/                  # Next.js App Router (Dashboard & API Routes)
+├── app/                 # Next.js App Router (Dashboard & API Routes)
 ├── components/          # Reusable UI architecture (Providers & Widgets)
 ├── lib/                 # Core utilities & Translation Dictionary
 └── public/              # Static assets & Deployment configs
