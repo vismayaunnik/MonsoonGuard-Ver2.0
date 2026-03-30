@@ -1,29 +1,55 @@
-# MonsoonGuard ⛈️🛡️
+# MonsoonGuard 
 
-> **Next-Generation Flood Management & Emergency Response System**
-
-MonsoonGuard is a comprehensive, full-stack disaster management platform built to provide real-time telemetry, location-aware weather alerts, and emergency coordination. Designed for high resilience during critical climatic events, it ensures communities and responders have instant access to potentially life-saving data.
+MonsoonGuard is a comprehensive Flood Management & Emergency Response System designed to help communities prepare for and respond to flooding events. The platform provides real-time weather alerts, flood risk monitoring, evacuation center discovery, and offline map support to ensure accessibility even during network disruptions.
 
 ## 🌟 Key Features
 
-- **Multi-Source Location Engine**: Real-time discovery of evacuation centers (Schools, Hospitals, Worship Places) using **Google Places**, **Nominatim (OSM)**, and **Overpass API** for maximum reliability.
-- **Live Meteorological Tracking**: Instantly view weather alerts, 6-day forecasts, and river station telemetry via Open-Meteo and Ambee.
-- **Global Reactive Localization**: Full UI support across **English, Hindi, Bengali, Malayalam, and Telugu** with zero-refresh context routing.
-- **Secure API Proxy Architecture**: Server-side request handling (`/api/places`) to bypass CORS and protect sensitive API keys.
-- **Emergency UI/UX**: High-visibility "Action Grid" design ensuring critical buttons (Directions, Locate on Map) are never clipped or obstructed.
-- **Offline Maps Protocol**: Simulated pre-caching for emergency cartography downloads when regional grid networks fail.
+### Flood Monitoring
 
-## 🛠️ Technology Stack
+* Real-time monitoring of river conditions and water levels
+* Flood risk assessment based on environmental data
 
-- **Framework:** Next.js 15 (App Router)
-- **Library:** React 19
-- **3D Visuals:** Three.js / React-Three-Fiber
-- **Styling:** Tailwind CSS (with arbitrary value integration)
-- **Maps:** Leaflet / React-Leaflet
-- **Icons:** Lucide-React
-- **Type Safety:** TypeScript
+### Weather Alerts
 
-## 📦 Local Setup Instructions
+* Live weather data and multi-day forecasts
+* Automatic risk alerts for extreme rainfall and storm conditions
+
+### Evacuation Centers
+
+* Locate nearby evacuation shelters and relief centers
+* Quick routing and map guidance during emergencies
+
+### Offline Maps
+
+* Emergency map tile caching
+* Maps remain accessible even without an internet connection
+
+### Multilingual Support
+
+Available in:
+
+* English
+* Hindi
+* Bengali
+* Malayalam
+* Telugu
+
+## Technology Stack
+
+**Next.js 15** 
+**React 19** 
+**TypeScript**
+**HTML5 & CSS3**
+**Javascript**
+**Tailwind CSS**
+**Three.js** 
+**Leaflet**
+
+## Live Demo
+
+**https://monsoon-guard-ver2-0.vercel.app/**
+
+## Local Setup Instructions
 
 1. **Clone the repository:**
    ```bash
@@ -45,13 +71,7 @@ MonsoonGuard is a comprehensive, full-stack disaster management platform built t
    npm run dev
    ```
 5. **Launch the application:**
-   Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-## 🔑 Environment Configuration (Vercel)
-
-For production deployment, ensure the following are set in your Vercel Dashboard:
-- `NEXT_PUBLIC_AMBEE_API_KEY`: Powering live flood risk assessment.
-- `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`: Powering evacuation center discovery (proxied via `/api/places`).
+   Open `http://localhost:3000` in your browser.
 
 ## 📂 Architecture
 
@@ -62,11 +82,25 @@ For production deployment, ensure the following are set in your Vercel Dashboard
 ├── lib/                 # Core utilities & Translation Dictionary
 └── public/              # Static assets & Deployment configs
 ```
+## APIs Used
 
-## 🚀 Future Roadmap
-- [ ] **PWA Integration:** True service workers for total offline survival.
-- [ ] **AI Forecasting:** Predictive flood models utilizing historical telemetry.
-- [ ] **SMS Fallback:** Emergency alert integration for low-data scenarios.
+1. **Open-Meteo**: Current weather tracking, 24-hour precipitation monitoring, and multi-day forecasting.
+2. **Overpass API (OSM)**: Map data querying used to detect main rivers (waterways) and identify evacuation centers dynamically based on user coordinates.
+3. **OpenStreetMap (Nominatim)**: For reverse-geocoding coordinates to detect the user's city/state and as a secondary fallback for location searched
+4. **Google Places API**: Primary API for precise nearby search of emergency services and medical facilities across different regions.
+5. **Leaflet / OpenStreetMap Tiles:** For renderinginteractive map layers and providing offline-capable map visual data.
+
+## Future Improvements
+
+* AI-based flood prediction models
+* Government disaster data integration
+* SMS emergency alerts for rural areas
+* Crowdsourced flood reporting
+
+## Project Purpose
+
+This project was created to demonstrate how modern web technologies can assist in **disaster preparedness and climate resilience**, particularly for flood-prone regions.
 
 ## 📄 License
+
 MIT License
