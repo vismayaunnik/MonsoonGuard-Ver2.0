@@ -36,8 +36,8 @@ Available in:
 
 ## Technology Stack
 
-**Next.js 15** 
-**React 19** 
+*Next.js 15* 
+*React 19*
 **TypeScript**
 **HTML5 & CSS3**
 **Javascript**
