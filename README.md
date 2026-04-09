@@ -36,14 +36,14 @@ Available in:
 
 ## Technology Stack
 
-*Next.js 15* 
-*React 19*
-**TypeScript**
-**HTML5 & CSS3**
-**Javascript**
-**Tailwind CSS**
-**Three.js** 
-**Leaflet**
+Next.js 15  
+React 19  
+TypeScript  
+HTML5 & CSS3  
+JavaScript  
+Tailwind CSS  
+Three.js  
+Leaflet
 
 ## Live Link
 
