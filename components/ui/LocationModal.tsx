@@ -89,20 +89,20 @@ export const LocationModal = () => {
                   <div className="w-full border-t border-zinc-800"></div>
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-zinc-900 px-3 text-zinc-500 font-medium tracking-widest">{t('or-enter-city') || 'Or enter city'}</span>
+                  <span className="bg-zinc-900 px-3 text-zinc-500 font-medium tracking-widest">{t('or-enter-city') || 'Or enter city or PIN code'}</span>
                 </div>
               </div>
 
               {searchError && (
                 <p className="text-red-400 text-xs mb-2 text-left px-4 italic">
-                  {t('invalid-city-error') || 'Invalid city or not in India. Please try again.'}
+                  {t('invalid-city-error') || 'Invalid city, PIN code, or not in India. Please try again.'}
                 </p>
               )}
 
               <form onSubmit={handleSearch} className="relative group">
                 <input
                   type="text"
-                  placeholder={t('city-placeholder') || "e.g. Mumbai, Kochi..."}
+                  placeholder={t('city-placeholder') || "e.g. Mumbai, Kochi, 400001..."}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className={`w-full bg-zinc-800/50 border ${searchError ? 'border-red-500/50' : 'border-zinc-700/50'} focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/10 rounded-2xl py-4 pl-12 pr-6 text-zinc-200 placeholder:text-zinc-600 transition-all outline-none`}

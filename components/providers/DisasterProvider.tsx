@@ -67,6 +67,8 @@ export const DisasterProvider = ({ children }: { children: React.ReactNode }) =>
       if (locationInfo.errorType && !forceDefault) {
         setLocationError(locationInfo.errorType);
         setShowLocationModal(true);
+      } else {
+        setShowLocationModal(false);
       }
 
       setCoords(locationInfo.coords);

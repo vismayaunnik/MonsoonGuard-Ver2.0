@@ -85,8 +85,11 @@ export const searchCity = async (query: string): Promise<{ coords: Coordinates; 
   if (!query || query.length < 2) return null;
 
   try {
+    const isPinCode = /^\d{6}$/.test(query.trim());
+    const finalQuery = isPinCode ? `${query.trim()}, India` : query;
+
     const response = await fetch(
-      `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&countrycodes=in&limit=1`,
+      `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(finalQuery)}&format=json&countrycodes=in&limit=1&addressdetails=1`,
       { headers: { 'Accept-Language': 'en' } }
     );
     const data = await response.json();
@@ -94,7 +97,12 @@ export const searchCity = async (query: string): Promise<{ coords: Coordinates; 
     if (data && data.length > 0) {
       const result = data[0];
       const coords = { lat: parseFloat(result.lat), lon: parseFloat(result.lon) };
-      const city = result.display_name.split(',')[0] + ', ' + (result.display_name.split(',').slice(-2, -1)[0]?.trim() || 'India');
+      
+      const addr = result.address;
+      const cityName = addr.city || addr.town || addr.village || addr.suburb || addr.district || result.display_name.split(',')[0];
+      const stateName = addr.state || 'India';
+      const city = `${cityName}, ${stateName}`;
+      
       return { coords, city };
     }
     return null;
@@ -163,8 +171,6 @@ export const fetchFloodData = async (coords: Coordinates, weatherData: WeatherDa
     if (!response.ok) throw new Error('Ambee API failed');
     const ambeeData = await response.json();
     
-    // Extract risk from Ambee response (assuming structure from docs)
-    // If Ambee fails or format is weird, fallback to weather-based logic
     const riskData = ambeeData.data?.[0];
     const risk = riskData?.risk_level || (weatherData.daily.precipitation_sum[0] > 30 ? 'High' : weatherData.daily.precipitation_sum[0] > 10 ? 'Moderate' : 'Low');
 
@@ -247,8 +253,7 @@ export const fetchEvacuationCenters = async (coords: Coordinates, cityName: stri
     throw new Error('No places found');
   } catch (err) {
     console.warn("Google Places API failed, falling back to Overpass/Dynamic centers", err);
-    // Legacy Overpass fallback for redundancy
-    return fetchOverpassCenters(coords, cityName);
+    return fetchOverpassCenters(coords, cityName, lang);
   }
 };
 
@@ -300,7 +305,7 @@ const centerTranslations: Record<string, any> = {
   },
   hi: {
     hospital: (city: string) => `${city} क्षेत्रीय आपातकालीन अस्पताल`,
-    pavilion: (city: string) => `${city} सामुदायिक सुरक्षा मंडप`,
+    pavilion: (city: string) => `${city} सामुदायिक सुरक्षा मंडప`,
     school: (city: string) => `${city} सार्वजनिक राहत स्कूल`,
     hub: (city: string) => `${city} जिला प्रतिक्रिया केंद्र`,
     med_shelter: 'चिकित्सा आश्रय', comm_center: 'सामुदायिक केंद्र', school_type: 'स्कूल', emerg_svcs: 'आपातकालीन सेवाएं'
@@ -317,7 +322,7 @@ const centerTranslations: Record<string, any> = {
     pavilion: (city: string) => `${city} കമ്മ്യൂണിറ്റി സേഫ്റ്റി പവിലിയൻ`,
     school: (city: string) => `${city} പബ്ലിക് റിലീഫ് സ്കൂൾ`,
     hub: (city: string) => `${city} ഡിസ്ട്രിക്റ്റ് റെസ്‌പോൺസ് ഹബ്ബ്`,
-    med_shelter: 'മെഡിക്കൽ ഷെൽട്ടർ', comm_center: 'കമ്മ്യൂണിറ്റി സെന്റർ', school_type: 'സ്കൂൾ', emerg_svcs: 'എമർജൻസി സർവീസസ്'
+    med_shelter: 'മെഡിക്കൽ ഷെൽട്ടർ', comm_center: 'കമ്മ്യൂണിറ്റി സെന്റർ', school_type: 'സ്കൂൾ', emerg_svcs: 'എമർజൻസി സർവീസസ്'
   },
   te: {
     hospital: (city: string) => `${city} ప్రాంతీయ అత్యవసర ఆసుపత్రి`,
